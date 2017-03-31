@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="proxyBeanProcessor" class="net.fendar.test.spring.processor.ProxyProcessor">
+        <property name="advisors">
+            <list>
+                <!-- 依赖A，所以不能对A进行创建代理-->
+                <bean class="net.fendar.test.spring.advisor.SimpleAdvisor">
+                    <property name="targetIface" ref="targetA"/>
+                </bean>
+                <bean class="net.fendar.test.spring.advisor.MethodAnnotationAdvisor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="targetA" class="net.fendar.test.spring.bean.TargetA"/>
+    <bean id="targetB" class="net.fendar.test.spring.bean.TargetB"/>
+</beans>
