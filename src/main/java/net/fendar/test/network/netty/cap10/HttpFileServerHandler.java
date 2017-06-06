@@ -17,6 +17,9 @@ import static io.netty.handler.codec.http.HttpResponseStatus.*;
  */
 public class HttpFileServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     @Override
+    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest msg) throws Exception {
+    }
+
     protected void messageReceived(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
         System.out.println("get request");
         if (!request.decoderResult().isSuccess()) {

@@ -25,6 +25,7 @@ public abstract class EnumGeneric<T> implements Face<T> {
         return new EnumGeneric<?>[]{A, B};
     }
 
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         EnumGeneric<String> e = (EnumGeneric<String>)EnumGeneric.values()[0];
     }

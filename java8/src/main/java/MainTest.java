@@ -1,9 +1,14 @@
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -26,20 +31,42 @@ public class MainTest {
         }
     }
 
+    class Apple {
+        private int weight;
+        public int getWeight() {
+            return weight;
+        }
+    }
+
+    class ObjSizeB {
+        private int i;
+        private Locale l = Locale.US;
+        private char c;
+    }
+
+    interface T {
+        void t() throws IOException;
+    }
+
     @Test
     public void mainTest() {
+
+        Comparator<Apple> comparator = new Comparator<Apple>() {
+            @Override
+            public int compare(Apple o1, Apple o2) {
+                return o1.getWeight() - o2.getWeight();
+            }
+        };
+
+        Comparator<Apple> comparator1 = (o1, o2) -> o1.getWeight() - o2.getWeight();
+        Comparator<Apple> comparator2 = Comparator.comparing(Apple::getWeight);
+
         Integer a = 1;
         Comparator<Integer> c = Integer::compare;
         Comparator<Integer> t = (c1, c2) -> c1 - c2;
         List<Integer> list = Arrays.asList(1, 2, 3, 5, 24, -123, 4);
-        list.sort(c);
         System.out.println(list);
 
-    }
-
-    @Test
-    public void test2() {
-        System.out.println(FileUtils.getTempDirectoryPath());
     }
 
     /**
@@ -69,4 +96,45 @@ public class MainTest {
 
         System.out.println(list.stream().collect(Collectors.groupingBy(String::length)));
     }
+
+    @Test
+    public void testObjSize() throws IOException {
+        Apple apple = new Apple();
+
+        System.out.println(apple.getWeight());
+
+        ObjSizeB b = new ObjSizeB();
+
+        System.in.read();
+        System.out.println(b);
+
+    }
+
+    String t = "testaaaaaa";
+
+    /**
+     * string intern的产生方法 new String("xxx").intern();
+     * @throws IOException
+     */
+    @Test
+    public void testStringIntern() throws IOException {
+        List<String> list = new ArrayList<>(10000);
+
+        for (int i = 0; i < 9999999; i++) {
+            list.add(new String(t).intern());
+        }
+        System.out.println(list.get(59));
+
+        System.in.read();
+    }
+
+    @Test
+    public void testTimeDiff() {
+        LocalDateTime sdateTime = LocalDateTime.parse("20170330131450", DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        LocalDateTime eDateTime = LocalDateTime.parse("20170418113556", DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+
+        Duration d  = Duration.between(sdateTime, eDateTime);
+        System.out.println(d.toNanos()/(double)1_000_000_000);
+    }
+
 }
